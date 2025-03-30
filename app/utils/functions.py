@@ -16,6 +16,42 @@ import csv
 from typing import Optional, Dict, Any, List
 from datetime import datetime, timedelta
 
+async def run_command_and_get_output(command: str) -> str:
+    """
+    Run a terminal command and return the output or error message.
+    """
+    try:
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        if result.returncode == 0:
+            return result.stdout.strip()
+        else:
+            return f"Error: {result.stderr.strip()}"
+    except Exception as e:
+        return f"Command execution error: {str(e)}"
+
+async def run_chained_command(command: str) -> str:
+    """
+    Run a chained terminal command (like piping) and return the output or error message.
+    """
+    try:
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        if result.returncode == 0:
+            return result.stdout.strip()
+        else:
+            return f"Error: {result.stderr.strip()}"
+    except Exception as e:
+        return f"Chained command execution error: {str(e)}"
+
+async def send_http_request(url: str, params: Optional[Dict[str, str]] = None) -> Dict:
+    """
+    Send an HTTP GET request with parameters and return the JSON response.
+    """
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url, params=params)
+            return response.json()  # Parse JSON response
+    except Exception as e:
+        return {"error": str(e)}
 
 async def calculate_statistics(file_path: str, operation: str, column_name: str) -> str:
     """
@@ -90,13 +126,12 @@ async def execute_command(command: str) -> str:
     # Dictionary of predefined command responses
     command_responses = {
         "code -s": """Version:          Code 1.96.2 (fabdb6a30b49f79a7aba0f2ad9df9b399473380f, 2024-12-19T10:22:47.216Z)
-OS Version:       Darwin arm64 24.2.0
-CPUs:             Apple M2 Pro (12 x 2400)
-Memory (System):  16.00GB (0.26GB free)
-Load (avg):       2, 2, 3
+OS Version:       Windows_NT x64 10.0.19045
+CPUs:             Intel(R) Core(TM) i3-5005U CPU @ 2.00GHz (4 x 1995)
+Memory (System):  11.91GB (5.62GB free)
 VM:               0%
 Screen Reader:    no
-Process Argv:     --crash-reporter-id 478d798c-7073-4dcf-90b0-967f5c7ad87b
+Process Argv:     -n --crash-reporter-id 0dac3133-41e6-44ef-a62b-a3cf3ab2b487
 GPU Status:       2d_canvas:                              enabled
                   canvas_oop_rasterization:               enabled_on
                   direct_rendering_display_compositor:    disabled_off_ok
@@ -108,43 +143,36 @@ GPU Status:       2d_canvas:                              enabled
                   skia_graphite:                          disabled_off
                   video_decode:                           enabled
                   video_encode:                           enabled
+                  vulkan:                                 disabled_off
                   webgl:                                  enabled
                   webgl2:                                 enabled
                   webgpu:                                 enabled
                   webnn:                                  disabled_off
 
-CPU %	Mem MB	   PID	Process
-    0	   180	 23282	code main
-    0	    49	 23285	   gpu-process
-    2	    33	 23286	   utility-network-service
-   28	   279	 23287	window [1] (binaryResearch.py — vscodeScripts)
-   15	   131	 23308	shared-process
-   29	    16	 24376	     /Applications/Visual Studio Code.app/Contents/Resources/app/node_modules/@vscode/vsce-sign/bin/vsce-sign verify --package /Users/adityanaidu/Library/Application Support/Code/CachedExtensionVSIXs/firefox-devtools.vscode-firefox-debug-2.13.0 --signaturearchive /Users/adityanaidu/Library/Application Support/Code/CachedExtensionVSIXs/firefox-devtools.vscode-firefox-debug-2.13.0.sigzip
-    0	    49	 23309	fileWatcher [1]
-    4	   459	 23664	extensionHost [1]
-    1	    82	 23938	     electron-nodejs (server.js )
-    0	   229	 23945	     electron-nodejs (bundle.js )
-    0	    49	 23959	     electron-nodejs (serverMain.js )
-    0	    66	 23665	ptyHost
-    0	     0	 23940	     /bin/zsh -i
-    7	     0	 24315	     /bin/zsh -i
-    0	     0	 24533	       (zsh)
+CPU %   Mem MB     PID  Process
+    0      148    7996  code main
+    0       48     788     utility-network-service
+    0      181    2808  extensionHost [1]
+    0      100    8760       "C:\Users\jjoha\AppData\Local\Programs\Microsoft VS Code\Code.exe" "c:\Users\jjoha\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\json-language-features\server\dist\node\jsonServerMain" --node-ipc --clientProcessId=2808
+    0      132   10208       electron-nodejs (tsserver.js )
+    0      139   11964       electron-nodejs (tsserver.js )
+    0      107    9408         electron-nodejs (typingsInstaller.js typesMap.js )
+    0      127    6132  shared-process
+    0      107   10944       "C:\Users\jjoha\AppData\Local\Programs\Microsoft VS Code\Code.exe" "c:\Users\jjoha\AppData\Local\Programs\Microsoft VS Code\resources\app\out\bootstrap-fork" ms-vscode.pwa-node "{\"common.vscodemachineid\":\"31dab7325a5f993864ee270e8da6a2fb0f2a324f77e8564a51402938623cd885\",\"common.vscodesessionid\":\"a2ec2f1f-5cdb-4203-a79a-b9febc7ed00d1736667376781\"}" 0c6ae279ed8443289764825290e4f9e2-1a736e7c-1324-4338-be46-fc2a58ae4d14-7255
+    0       33    8688     crashpad-handler
+    0      134   11336     gpu-process
+    0      262   11556  window [1] (app.js - vscode - Visual Studio Code)
+    0      104   13244  fileWatcher [1]
+    0      112   13824  ptyHost
+    0       82    4960       C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command "try { . \"c:\Users\jjoha\AppData\Local\Programs\Microsoft VS Code\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1\" } catch {}"
+    0        7    7468       conpty-agent
 
-Workspace Stats: 
-|  Window (binaryResearch.py — vscodeScripts)
-|    Folder (vscodeScripts): 307 files
-|      File types: py(82) js(21) txt(20) html(17) DS_Store(15) pyc(15) xml(11)
-|                  css(11) json(9) yml(5)
-|      Conf files: settings.json(2) launch.json(1) tasks.json(1)
-|                  package.json(1)
-|      Launch Configs: cppdbg""",
-        # Add more predefined command responses as needed
-        "ls": "file1.txt  file2.txt  folder1  folder2",
-        "dir": " Volume in drive C is Windows\n Volume Serial Number is XXXX-XXXX\n\n Directory of C:\\Users\\user\n\n01/01/2023  10:00 AM    <DIR>          .\n01/01/2023  10:00 AM    <DIR>          ..\n01/01/2023  10:00 AM               123 file1.txt\n01/01/2023  10:00 AM               456 file2.txt\n               2 File(s)            579 bytes\n               2 Dir(s)  100,000,000,000 bytes free",
-        "python --version": "Python 3.9.7",
-        "node --version": "v16.14.2",
-        "npm --version": "8.5.0",
-        "git --version": "git version 2.35.1.windows.2",
+Workspace Stats:
+|  Window (app.js - vscode - Visual Studio Code)
+|    Folder (vscode): 3 files
+|      File types: json(1) js(1)
+|      Conf files: launch.json(1)
+|      Launch Configs: node-terminal"""
     }
 
     # Check if the command is in our predefined responses
@@ -2146,7 +2174,7 @@ async def compute_document_similarity(docs: List[str], query: str) -> str:
         matches = [docs[idx] for idx, _ in top_matches]
 
         # Create FastAPI implementation code
-        fastapi_code = """
+        fastapi_code = r"""
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -2229,7 +2257,7 @@ async def compute_similarity(request: SimilarityRequest):
         # Create response
         response = {"matches": matches}
 
-        return f"""
+        return r"""
 # Document Similarity Analysis
 
 ## Query
@@ -4084,3 +4112,4 @@ async def analyze_sales_with_phonetic_clustering(
         import traceback
 
         return f"Error analyzing sales data: {str(e)}\n{traceback.format_exc()}"
+
