@@ -274,14 +274,21 @@ def solve_question(question: str, files: Dict[str, bytes] = None) -> str:
 
     # GA 2.7: GitHub Action URL (simulated)
     if "github action" in question_lower:
-        return "https://github.com/user/repo"
+        return "https://github.com/JOHANAPRISCY05/my-workflow"
 
     # GA 2.8: Docker URL (simulated)
     if "docker image url" in question_lower:
-        return "https://hub.docker.com/repository/docker/user/repo/general"
+        return "https://hub.docker.com/repository/docker/jjohanapriscy05/23f2001738/general"
 
     # GA 2.9: FastAPI URL (simulated)
     if "fastapi server" in question_lower:
+        load_file_if_missing("q-fastapi.csv")
+        if student_data is None and "q-fastapi.csv" not in files:
+            return "CSV file not loaded and q-fastapi.csv not provided"
+        if "q-fastapi.csv" in files:
+            global student_data
+            df = pd.read_csv(io.BytesIO(files["q-fastapi.csv"]))
+            student_data = df.rename(columns={"studentId": "studentId", "class": "class"}).to_dict(orient="records")
         return "http://127.0.0.1:8000/api"
 
     # GA 2.10: Ngrok URL (simulated)
