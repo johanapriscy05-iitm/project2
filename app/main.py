@@ -270,7 +270,7 @@ def solve_question(question: str, files: Dict[str, bytes] = None) -> str:
 
     # GA 2.6: Vercel URL (simulated)
     if "vercel url" in question_lower:
-        return "https://your-app.vercel.app/api"
+        return "https://your-app-red.vercel.app/api"
 
     # GA 2.7: GitHub Action URL (simulated)
     if "github action" in question_lower:
