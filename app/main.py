@@ -66,6 +66,8 @@ def solve_question(question: str, files: Dict[str, bytes] = None) -> str:
     if "code -s" in question_lower:
         return run_command([r"C:\Users\johnj\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd", "-s"])
 
+
+
     # GA 1.2: HTTPS request to httpbin
     if "send a https request to https://httpbin.org/get" in question_lower:
         email_match = re.search(r"email set to (\S+)", question_lower)
@@ -250,7 +252,7 @@ def solve_question(question: str, files: Dict[str, bytes] = None) -> str:
 
     # GA 2.3: GitHub Pages URL (simulated)
     if "github pages url" in question_lower:
-        return "https://JOHANAPRISCY05.github.io/"
+        return "https://user.github.io/repo/"
 
     # GA 2.4: Google Colab (simulated)
     if "run this program on google colab" in question_lower:
@@ -282,13 +284,6 @@ def solve_question(question: str, files: Dict[str, bytes] = None) -> str:
 
     # GA 2.9: FastAPI URL (simulated)
     if "fastapi server" in question_lower:
-        load_file_if_missing("q-fastapi.csv")
-        if student_data is None and "q-fastapi.csv" not in files:
-            return "CSV file not loaded and q-fastapi.csv not provided"
-        if "q-fastapi.csv" in files:
-            global student_data
-            df = pd.read_csv(io.BytesIO(files["q-fastapi.csv"]))
-            student_data = df.rename(columns={"studentId": "studentId", "class": "class"}).to_dict(orient="records")
         return "http://127.0.0.1:8000/api"
 
     # GA 2.10: Ngrok URL (simulated)
@@ -356,7 +351,15 @@ def solve_question(question: str, files: Dict[str, bytes] = None) -> str:
         url = "https://stats.espncricinfo.com/ci/engine/stats/index.html?page=18&class=2&template=results&type=batting"
         soup = BeautifulSoup(requests.get(url).text, "html.parser")
         table = soup.find("table", class_="engineTable")
-        ducks = sum(int(row.find_all("td")[8].text.strip()) for row in table.find_all("tr", class_="data1") if row.find_all("td")[8].text.strip().isdigit())
+        
+        if table is None:
+            return "Error: Table not found on the webpage."
+
+        ducks = 0
+        for row in table.find_all("tr", class_="data1"):
+            td = row.find_all("td")
+            if len(td) > 8 and td[8].text.strip().isdigit():
+                ducks += int(td[8].text.strip())
         return str(ducks)
 
     # GA 4.2: IMDb JSON
