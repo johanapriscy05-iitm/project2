@@ -1,0 +1,41 @@
+//q1
+//curl -X POST "http://localhost:8000/api/" -H "Content-Type: multipart/form-data" -F "question=code -s"
+
+{
+    "answer":"Version:          Code 1.98.2 (ddc367ed5c8936efe395cffeec279b04ffd7db78, 2025-03-12T13:32:45.399Z)\nOS Version:       Windows_NT x64 10.0.19045\nCPUs:             Intel(R) Core(TM) i3-5005U CPU @ 2.00GHz (4 x 1995)\nMemory (System):  11.91GB (5.99GB free)\nVM:               0%\nScreen Reader:    no\nProcess Argv:     --folder-uri file:///d%3A/python%20course/project_git --crash-reporter-id 333ece52-d9fc-4b42-8490-c8b65e35014e\nGPU Status:       2d_canvas:                              enabled\n                  canvas_oop_rasterization:               enabled_on\n                  direct_rendering_display_compositor:    disabled_off_ok\n                  gpu_compositing:                        enabled\n                  multiple_raster_threads:                enabled_on\n                  opengl:                                 enabled_on\n                  rasterization:                          enabled\n                  raw_draw:                               disabled_off_ok\n                  skia_graphite:                          disabled_off\n                  video_decode:                           enabled\n                  video_encode:                           enabled\n                  vulkan:                                 disabled_off\n                  webgl:                                  enabled\n                  webgl2:                                 enabled\n                  webgpu:                                 enabled\n                  webnn:                                  disabled_off\n\nCPU %\tMem MB\t   PID\tProcess\n    0\t   123\t 10256\tcode main\n    0\t    44\t  2452\t   utility-network-service\n    0\t    29\t  2732\t   crashpad-handler\n    0\t   140\t  4048\t   gpu-process\n    0\t   234\t  5752\twindow [1] (main.py - project_git - Visual Studio Code)\n    0\t    99\t  7128\tfileWatcher [1]\n    0\t   110\t  7240\tptyHost\n    0\t     6\t  8312\t     conpty-agent\n    0\t    69\t 12488\t     C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noexit -command \"try { . \\\"c:\\Users\\johnj\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\out\\vs\\workbench\\contrib\\terminal\\common\\scripts\\shellIntegration.ps1\\\" } catch {}\"\n    0\t   124\t  8188\textensionHost [1]\n    0\t   102\t  9452\tshared-process\n\nWorkspace Stats: \n|  Window (main.py - project_git - Visual Studio Code)\n|    Folder (project_git): 75 files\n|      File types: html(31) zip(6) ffpreset(5) txt(4) exe(3) css(3) json(3)\n|                  png(2) pdf(2) py(1)\n|      Conf files:"
+}
+
+//q2
+//curl -X POST "http://localhost:8000/api/" -H "Content-Type: multipart/form-data" -F "question=send a https request to https://httpbin.org/get"
+
+{
+    "answer":"{\"email\": \"23f2001738@ds.study.iitm.ac.in\"}"
+}
+
+//q3
+//curl -X POST "http://localhost:8000/api/" -H "Content-Type: multipart/form-data" -F "question=q-replace-across-files.zip" -F "file=@tests\q-replace-across-files.zip"
+
+{
+    "answer":"a8162e43d7deab82f34ffa7759ad044cb95edfad85a43d73e304f2006a0e17d8"
+}
+
+//q4
+//curl -X POST "http://localhost:8000/api/" -H "Content-Type: multipart/form-data" -F "question=q-list-files-attributes.zip" -F "file=@tests\q-list-files-attributes.zip"
+
+{
+    "answer":"537017"
+}
+
+//q5
+//curl -X POST "http://localhost:8000/api/" -H "Content-Type: multipart/form-data" -F "question=github pages url"
+
+{
+    "answer":"https://JOHANAPRISCY05.github.io/"
+}
+
+//q6
+//curl -X POST "http://localhost:8000/api/" -H "Content-Type: multipart/form-data" -F "question=run this program on google colab"
+
+{
+    "answer":"19cbd"
+}
